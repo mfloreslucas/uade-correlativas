@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UADE Correlativas</title>
+    <title>Mapa de correlativas</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -11,95 +11,90 @@
     <div class="grain"></div>
 
     <header class="site-header">
-      <div>
-        <p class="eyebrow">Planificador personal</p>
-        <h1>UADE Correlativas</h1>
+      <div class="brand">
+        <h1>Mapa de correlativas</h1>
+        <p class="brand-subtitle">Buscá tu carrera y abrí el mapa completo.</p>
       </div>
       <div class="session-actions">
+        <button class="ghost" id="theme-toggle" type="button">Modo oscuro</button>
         <button class="ghost" id="login-open">Ingresar</button>
         <button class="primary" id="register-open">Crear cuenta</button>
       </div>
     </header>
 
-    <main class="container">
-      <section class="hero">
-        <div>
-          <h2>Tu avance, claro y ordenado.</h2>
-          <p>
-            Registrá materias cursadas, en progreso o planificadas. Si querés
-            guardar cambios y usarlo en todos tus dispositivos, iniciá sesión.
+    <main>
+      <section class="hero-search" id="home-section">
+        <div class="hero-minimal">
+          <h2>Elegí tu carrera</h2>
+          <p class="hero-copy">
+            Buscá por carrera y universidad. El mapa se abre en una vista dedicada.
           </p>
-        </div>
-        <div class="hero-card">
-          <div>
-            <span class="tag">Vista rápida</span>
-            <h3>Resumen semanal</h3>
-            <p>Guardá notas clave y el próximo paso de cada materia.</p>
+          <div class="hero-input">
+            <label class="inline-field">
+              Ingresá tu carrera
+              <input id="career-search" list="career-options" placeholder="Ingeniería en Informática (UADE)" />
+              <datalist id="career-options"></datalist>
+            </label>
+            <button class="primary" id="career-go" type="button">Ver mapa</button>
           </div>
-          <div class="stats">
-            <div>
-              <span class="stat-label">Planificadas</span>
-              <span class="stat" id="stat-planned">0</span>
-            </div>
-            <div>
-              <span class="stat-label">En curso</span>
-              <span class="stat" id="stat-active">0</span>
-            </div>
-            <div>
-              <span class="stat-label">Aprobadas</span>
-              <span class="stat" id="stat-done">0</span>
-            </div>
-          </div>
+          <p class="hero-hint">Ejemplo: Ingeniería en Informática (UADE)</p>
         </div>
       </section>
 
-      <section class="panel">
-        <div class="panel-header">
-          <div>
-            <h3>Materias</h3>
-            <p>Agregá, editá o eliminá. Cambiá estado con un click.</p>
-          </div>
-          <button class="primary" id="course-open">Nueva materia</button>
+      <section class="career-landing" id="career-landing" aria-hidden="true">
+        <div class="landing-header">
+          <h2>Carreras</h2>
+          <p class="hero-copy">Seleccioná una carrera para ver su mapa de correlativas.</p>
         </div>
-        <div class="list" id="course-list">
-          <div class="empty" id="empty-state">Todavía no tenés materias.</div>
+        <div class="career-grid" id="career-grid"></div>
+      </section>
+
+      <section class="map-section" id="map-section" aria-hidden="true">
+        <div class="map-header">
+          <div class="map-title">
+            <nav class="breadcrumb" aria-label="breadcrumb">
+              <button class="ghost breadcrumb-link" id="map-back" type="button">
+                Inicio
+              </button>
+              <span class="breadcrumb-sep">/</span>
+              <span class="breadcrumb-current" id="map-career">Carrera</span>
+            </nav>
+            <h3 class="map-heading">Mapa de correlativas</h3>
+          </div>
+          <div class="map-meta">
+            <div class="map-stats">
+              <div>
+                <span class="stat-label">Total</span>
+                <span class="stat" id="stat-planned">0</span>
+              </div>
+              <div>
+                <span class="stat-label">Aprobadas</span>
+                <span class="stat" id="stat-active">0</span>
+              </div>
+              <div>
+                <span class="stat-label">En curso</span>
+                <span class="stat" id="stat-done">0</span>
+              </div>
+            </div>
+            <div class="map-legend">
+              <span class="lg-item lg-active"><span class="lg-dot"></span><span class="lg-label">Disp.</span></span>
+              <span class="lg-item lg-in_progress"><span class="lg-dot"></span><span class="lg-label">Curs.</span></span>
+              <span class="lg-item lg-done"><span class="lg-dot"></span><span class="lg-label">Aprob.</span></span>
+              <span class="lg-item lg-adeuda_final"><span class="lg-dot"></span><span class="lg-label">Final</span></span>
+              <span class="lg-item lg-regular"><span class="lg-dot"></span><span class="lg-label">Reg.</span></span>
+              <span class="lg-item lg-planned"><span class="lg-dot"></span><span class="lg-label">Plan.</span></span>
+              <span class="lg-item lg-locked"><span class="lg-dot"></span><span class="lg-label">Bloq.</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="map" id="course-map">
+          <svg class="map-lines" id="map-lines"></svg>
+          <div class="map-grid" id="course-list">
+            <div class="empty" id="empty-state">Ingresá una carrera para ver el mapa.</div>
+          </div>
         </div>
       </section>
     </main>
-
-    <div class="modal" id="course-modal" aria-hidden="true">
-      <div class="modal-card">
-        <div class="modal-header">
-          <h4>Nueva materia</h4>
-          <button class="ghost" id="course-close">Cerrar</button>
-        </div>
-        <form id="course-form">
-          <label>
-            Materia
-            <select name="catalog_course_id" id="catalog-select" required></select>
-          </label>
-          <label>
-            Estado
-            <select name="status">
-              <option value="planned">Planificada</option>
-              <option value="active">En curso</option>
-              <option value="done">Aprobada</option>
-              <option value="failed">Desaprobada</option>
-              <option value="dropped">Abandonada</option>
-            </select>
-          </label>
-          <label>
-            Cuatrimestre
-            <input name="term" placeholder="2026 - 1" />
-          </label>
-          <label>
-            Notas
-            <textarea name="notes" rows="3" placeholder="Parcial 1 el 12/4"></textarea>
-          </label>
-          <button class="primary" type="submit">Guardar</button>
-        </form>
-      </div>
-    </div>
 
     <div class="modal" id="auth-modal" aria-hidden="true">
       <div class="modal-card">

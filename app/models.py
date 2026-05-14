@@ -26,6 +26,7 @@ class CatalogCourse(Base):
     term = Column(String, default="")
     plan = Column(String, default="")
     career = Column(String, default="")
+    university = Column(String, default="")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     prerequisites = relationship(

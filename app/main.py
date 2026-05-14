@@ -1,6 +1,8 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+import os
+from pathlib import Path
+from fastapi import FastAPI, Depends, HTTPException, status, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app import crud, models, schemas, auth
@@ -10,7 +12,7 @@ from app.db import SessionLocal, engine
 models.Base.metadata.create_all(bind=engine)
 seed_catalog()
 
-app = FastAPI(title="UADE Correlativas Tracker")
+app = FastAPI(title="Mapa de correlativas")
 
 
 def get_db():
@@ -101,9 +103,14 @@ def delete_course(
     return {"deleted": True}
 
 
-app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 
 
-@app.get("/")
-def index():
-    return FileResponse("app/static/index.html")
+@app.get("/{path:path}")
+async def serve_frontend(path: str):
+    if path.startswith("api/"):
+        return JSONResponse({"detail": "Not Found"}, status_code=404)
+    file_path = os.path.join(STATIC_DIR, path)
+    if os.path.isfile(file_path):
+        return FileResponse(file_path)
+    return FileResponse(os.path.join(STATIC_DIR, "index.html"))

@@ -9,6 +9,7 @@ services:
       APP_SECRET: "change-me"
       DATABASE_URL: "sqlite:////data/app.db"
     volumes:
+      - ./app/static:/app/app/static
       - app_data:/data
 
 volumes:

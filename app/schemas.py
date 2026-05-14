@@ -32,6 +32,7 @@ class CatalogCourse(BaseModel):
     term: str = ""
     plan: str = ""
     career: str = ""
+    university: str = ""
 
     class Config:
         from_attributes = True

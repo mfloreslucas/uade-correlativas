@@ -1,4 +1,4 @@
-# UADE Correlativas Tracker
+# Mapa de correlativas
 
 Proyecto base para planificar materias, guardar progreso y sincronizar entre dispositivos.
 
